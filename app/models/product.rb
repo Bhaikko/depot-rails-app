@@ -1,4 +1,8 @@
 class Product < ApplicationRecord
+  has_many :line_items
+
+  before_destroy :ensure_not_referenced_by_any_line_item
+
   # Adding validation related to Product text field for not being empty
   validates :title, :description, :image_url, presence: true
 
@@ -13,4 +17,16 @@ class Product < ApplicationRecord
     with:   %r{\.(gif|jpg|png)\z}i,
     message: 'must be a URL for GIF, JPG, or PNG image.'
   }
+
+  ## Creating hook method, executed before rails attempt to destory row in database
+  private def ensure_not_referenced_by_any_line_item
+    # ensure that there are no line items referencing this product
+    unless line_items.empty?
+      # same object used by validations to store errors
+      errors.add(:base, 'Line Items present')
+
+      # If hook method throws abort then row is not destroyed
+      throw :abort
+    end
+  end
 end
