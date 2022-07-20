@@ -1,4 +1,5 @@
 class CartsController < ApplicationController
+  # sets @cart reference before specified function based on id in params
   before_action :set_cart, only: %i[ show edit update destroy ]
 
   # GET /carts or /carts.json
