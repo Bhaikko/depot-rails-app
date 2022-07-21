@@ -35,8 +35,7 @@ class LineItemsController < ApplicationController
     respond_to do |format|
       if @line_item.save
         format.html { 
-          redirect_to @line_item.cart,  # redirect user to cart once line item created
-          notice: "Line item was successfully created." 
+          redirect_to @line_item.cart  # redirect user to cart once line item created
         }
 
         format.json { 
