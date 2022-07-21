@@ -38,6 +38,10 @@ class LineItemsController < ApplicationController
           redirect_to store_index_url # Refreshing store page everytime item added
         }
 
+        # response based on AJAX request
+        # Will tell ruby to look for create.js.erb
+        format.js
+
         format.json { 
           render :show, 
           status: :created, 
