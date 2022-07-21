@@ -60,7 +60,8 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
 
   ## test to ensure product in a cart cannot be deleted
   test "can't delete product in cart" do
-    ## checks the args value with value returned by block
+    ## verifies that the result of evaluating its first arguement
+    # changes by amount passed in second argument after executing block
     assert_difference('Product.count', 0) do
       delete product_url(products(:two))
     end
