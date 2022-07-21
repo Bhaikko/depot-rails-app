@@ -82,6 +82,8 @@ class LineItemsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def line_item_params
-      params.require(:line_item).permit(:product_id, :cart_id)
+      # Allowing only product_id from params list due to which
+      # line_item cannot be updated with a non-existing cart
+      params.require(:line_item).permit(:product_id)
     end
 end
