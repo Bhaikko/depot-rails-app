@@ -24,7 +24,7 @@
             <%# button_to creates HTML form that is submitted to url mentioned %>
             <%# Rails can extract id from instance passed %>
             <%# remote: true makes the request as AJAX %>
-            <%= button_to 'Add to Cart', line_items_path(product_id: product), remote: true%>
+            <%= button_to('Add to Cart', line_items_path(product_id: product), remote: true) %>
           </div>
         </li>
       <% end %>

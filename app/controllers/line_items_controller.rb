@@ -40,7 +40,10 @@ class LineItemsController < ApplicationController
 
         # response based on AJAX request
         # Will tell ruby to look for create.js.erb
-        format.js
+        format.js {
+          # Sending Data from controller to partial template
+          render layout: false
+        }
 
         format.json { 
           render :show, 
