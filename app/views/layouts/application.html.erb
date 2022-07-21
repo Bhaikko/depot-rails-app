@@ -23,10 +23,13 @@
 
     <section class="content">
       <nav class="side_nav">
-        <div id="cart" class="carts">
-          <%# Using Partials to render cart %>
-          <%= render @cart %>
-        </div>
+        <%# Avoiding Cart if it is nil %>
+        <% if @cart %>
+          <div id="cart" class="carts">
+            <%# Using Partials to render cart %>
+            <%= render @cart %>
+          </div>
+        <% end %>
 
         <ul>
           <li><a href="/">Home</a></li>
