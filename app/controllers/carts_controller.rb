@@ -2,6 +2,10 @@ class CartsController < ApplicationController
   # sets @cart reference before specified function based on id in params
   before_action :set_cart, only: %i[ show edit update destroy ]
 
+  # Handling Exception by rescuing and callback
+  # This will intercept exception raised by Cart.find()
+  rescue_from ActiveRecord::RecordNotFound, with: :invalid_cart
+
   # GET /carts or /carts.json
   def index
     @carts = Cart.all
@@ -67,5 +71,13 @@ class CartsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def cart_params
       params.fetch(:cart, {})
+    end
+
+    def invalid_cart
+      # Using Rails logger to record the error
+      logger.error "Attempt to access invalid cart #{params[:id]}"
+
+      # notice parameter specifies message to be stored in flash as notice
+      redirect_to store_index_url, notice: 'Invalid cart'
     end
 end
