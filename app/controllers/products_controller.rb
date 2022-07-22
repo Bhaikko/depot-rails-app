@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
   
   # GET /products or /products.json
   def index
-    @products = Product.all
+    @products = Product.all.order(:title)
   end
 
   # GET /products/1 or /products/1.json
@@ -43,6 +43,16 @@ class ProductsController < ApplicationController
       if @product.update(product_params)
         format.html { redirect_to product_url(@product), notice: "Product was successfully updated." }
         format.json { render :show, status: :ok, location: @product }
+
+        ## Using Channel to send entire catalog every time update is made
+        @products = Product.all.order(:title) # Required as this is used in store/index
+        ## render_to_string renders according to same rules as render,
+        # but returns the result in string instead of sending it as response body to browser
+        # data sent as key-value pair
+        # layout: false specifies that we only want view and not entire application layout page
+        ActionCable.server.broadcast('products', { 
+          html: render_to_string('store/index', layout: false) 
+        })
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @product.errors, status: :unprocessable_entity }
