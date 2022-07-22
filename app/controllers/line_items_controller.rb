@@ -1,4 +1,5 @@
 class LineItemsController < ApplicationController
+  skip_before_action :verify_authenticity_token
   # CurrentCart having cart based on sessions
   include CurrentCart
 
@@ -40,10 +41,7 @@ class LineItemsController < ApplicationController
 
         # response based on AJAX request
         # Will tell ruby to look for create.js.erb
-        format.js {
-          # Sending Data from controller to partial template
-          render layout: false
-        }
+        format.js
 
         format.json { 
           render :show, 
