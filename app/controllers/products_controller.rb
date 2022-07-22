@@ -1,4 +1,6 @@
 class ProductsController < ApplicationController
+  include ProductsHelper
+
   before_action :set_product, only: %i[ show edit update destroy ]
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_product
   
