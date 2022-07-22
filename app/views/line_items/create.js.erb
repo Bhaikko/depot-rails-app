@@ -10,3 +10,9 @@ cart = document.getElementById("cart");
  %>
 cart.innerHTML = "<%= j render(@cart) %>"
 
+<%# Removing notice element when new item added if it exists %>
+notice - document.getElementById("notice")
+if (notice) {
+  notice.style.display = "none";
+}
+

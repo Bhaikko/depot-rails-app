@@ -1,5 +1,4 @@
 class LineItemsController < ApplicationController
-  skip_before_action :verify_authenticity_token
   # CurrentCart having cart based on sessions
   include CurrentCart
 

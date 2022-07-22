@@ -23,13 +23,10 @@
 
     <section class="content">
       <nav class="side_nav">
-        <%# Avoiding Cart if it is nil %>
-        <% if @cart %>
-          <div id="cart" class="carts">
-            <%# Using Partials to render cart %>
-            <%= render @cart %>
-          </div>
-        <% end %>
+        <div id="cart" class="carts">
+          <%# Using Partials and Helper to render cart %>
+          <%= render_if @cart && @cart.line_items.any?, @cart %>
+        </div>
 
         <ul>
           <li><a href="/">Home</a></li>
