@@ -41,7 +41,9 @@ class LineItemsController < ApplicationController
 
         # response based on AJAX request
         # Will tell ruby to look for create.js.erb
-        format.js
+        format.js {
+          @current_item = @line_item
+        }
 
         format.json { 
           render :show, 
