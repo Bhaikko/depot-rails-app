@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  IMAGE_VALIDATION_REGEX = %r{\.(gif|jpg|png)\z}i.freeze
+
   # Adding validation related to Product text field for not being empty
   validates :title, :description, :image_url, presence: true
 
@@ -10,7 +12,7 @@ class Product < ApplicationRecord
 
   # Validation of url using regex
   validates :image_url, allow_blank: true, format: {
-    with:   %r{\.(gif|jpg|png)\z}i,
+    with:   IMAGE_VALIDATION_REGEX,
     message: 'must be a URL for GIF, JPG, or PNG image.'
   }
 end
