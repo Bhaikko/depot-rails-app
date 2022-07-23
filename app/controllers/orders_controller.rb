@@ -16,8 +16,14 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
-    # This empty object is created so as to use in form partial template
-    # to make edits into
+    # This empty object is created so as to use in form partial template to make edits into
+    ## Reason @order object created twice, in new and create
+    # new method @order created in memory to simply give the template code something to work with
+    # Once response sent to browser, that object gets abandoned and eventually reaped by ruby garbage collector
+    # create action order object is created using post params and added to database after validation
+    # Hence, model objects have two role: they map data into and out database
+    # but also are regular objects that hold business data. They affect database when told to
+    
     @order = Order.new
   end
 
@@ -28,10 +34,14 @@ class OrdersController < ApplicationController
   # POST /orders or /orders.json
   def create
     @order = Order.new(order_params)
+    # Adding items from current cart to order
+    @order.add_line_items_from_cart(@cart)
 
     respond_to do |format|
       if @order.save
-        format.html { redirect_to order_url(@order), notice: "Order was successfully created." }
+        Cart.destroy(session[:cart_id])
+        session[:cart_id] = nil
+        format.html { redirect_to store_index_url, notice: "Thank you for your order." }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new, status: :unprocessable_entity }
