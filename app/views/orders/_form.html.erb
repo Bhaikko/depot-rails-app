@@ -26,10 +26,14 @@
     <%= form.text_field :email, size: 40 %>
   </div>
 
+  <%# Replaced with React component
   <div>
-    <%= form.label :pay_type %>
-    <%= form.select :pay_type, Order.pay_types.keys, prompt: 'Select a payment method' %>
-  </div>
+    <%= form.label :pay_type % >
+    <%= form.select :pay_type, Order.pay_types.keys, prompt: 'Select a payment method' % >
+  </div> %>
+
+  <%# Added to use React component here%>
+  <div id="pay-type-component"></div>
 
   <div class="actions">
     <%= form.submit 'Place Order' %>
