@@ -1,6 +1,8 @@
 class Product < ApplicationRecord
   IMAGE_VALIDATION_REGEX = %r{\.(gif|jpg|png)\z}i.freeze
   has_many :line_items
+  # specifying indirect relationship through another entity
+  has_many :orders, through: :line_items
 
   before_destroy :ensure_not_referenced_by_any_line_item
 
