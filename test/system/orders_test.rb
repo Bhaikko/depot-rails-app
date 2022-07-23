@@ -44,4 +44,25 @@ class OrdersTest < ApplicationSystemTestCase
 
     assert_text "Order was successfully destroyed"
   end
+
+  # This test will not work for now because of webpack issue of not rendering component first time
+  test "check routing number" do
+    visit store_index_url
+
+    click_on 'Add to Cart', match: :first
+    
+    click_on 'Checkout'
+
+    fill_in 'order_name', with: 'Dave Thomas'
+    fill_in 'order_address', with: '123 Main'
+    fill_in 'order_email', with: 'dave@example.com'
+    
+    ## Checking if element with if #order_routing_number is not on screen before 'Check' type clicked
+    assert_no_selector "#order_routing_number"
+
+    select 'Check', from: 'Pay type'
+
+    ## Checking if element with if #order_routing_number is on screen
+    assert_selector "#order_routing_number"
+  end
 end
