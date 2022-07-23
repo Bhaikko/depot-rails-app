@@ -16,6 +16,8 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
+    # This empty object is created so as to use in form partial template
+    # to make edits into
     @order = Order.new
   end
 
