@@ -2,3 +2,6 @@
   <h1>Please Enter Your Details</h1>
   <%= render 'form', order: @order%>
 </section>
+
+<%# Including specific javascript using webpack in packs folder %>
+<%= javascript_pack_tag "pay_type" %>
