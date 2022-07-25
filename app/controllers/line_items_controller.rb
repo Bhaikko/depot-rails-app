@@ -1,4 +1,6 @@
 class LineItemsController < ApplicationController
+  skip_before_action :authorize, only: :create
+
   # CurrentCart having cart based on sessions
   include CurrentCart
 

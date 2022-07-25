@@ -1,4 +1,6 @@
 class CartsController < ApplicationController
+  skip_before_action :authorize, only: [:create, :update, :destroy]
+
   # sets @cart reference before specified function based on id in params
   before_action :set_cart, only: %i[ show edit update destroy ]
 
