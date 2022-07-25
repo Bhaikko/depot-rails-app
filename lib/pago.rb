@@ -3,7 +3,7 @@
 require 'ostruct'
 
 class Pago
-  def self.make_payment(order_id, payment_method: , payment_details: )
+  def self.make_payment(order_id: , payment_method: , payment_details: )
     case payment_method
     when :check
       Rails.logger.info "Processing check: " + 
@@ -22,7 +22,7 @@ class Pago
     end
 
     sleep 3 unless Rails.env.test?
-    Rails.logger.ingo "Done Processing payment"
+    Rails.logger.info "Done Processing payment"
 
     # This creates an object that that responds to method given to its contructor
     OpenStruct.new(succeeded?: true)
