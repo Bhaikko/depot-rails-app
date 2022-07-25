@@ -64,6 +64,12 @@ class UsersController < ApplicationController
     end
   end
 
+  # Rescuing from Transaction error thrown in user model if only one user exists
+  # the error thrown in model will be signaled back to controller
+  rescue_from 'User::Error' do |exception|
+    redirect_to users_urls, notice: exception.message
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
