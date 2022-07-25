@@ -69,9 +69,6 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   ## Sending mail configuration
-  # will not send mail but result appended to Array
-  # config.action_mailer.delivery_method = :test
-  # Will send mail 
   config.action_mailer.delivery_method = :smtp
 
   # Configuration for smtp setup
