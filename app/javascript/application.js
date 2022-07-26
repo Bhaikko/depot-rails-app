@@ -5,3 +5,5 @@ import Rails from "@rails/ujs"
 Rails.start();
 
 import "channels"
+import "trix"
+import "@rails/actiontext"
