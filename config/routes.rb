@@ -24,4 +24,6 @@ Rails.application.routes.draw do
     get :who_bought, on: :member
   end
 
+  resources :support_requests, only: [ :index, :update ]
+
 end
