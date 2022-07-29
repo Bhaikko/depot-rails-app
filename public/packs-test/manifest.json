@@ -1,0 +1,14 @@
+{
+  "entrypoints": {
+    "pay_type": {
+      "js": [
+        "/packs-test/js/pay_type-957af85a570ef3a3f70d.js"
+      ],
+      "js.map": [
+        "/packs-test/js/pay_type-957af85a570ef3a3f70d.js.map"
+      ]
+    }
+  },
+  "pay_type.js": "/packs-test/js/pay_type-957af85a570ef3a3f70d.js",
+  "pay_type.js.map": "/packs-test/js/pay_type-957af85a570ef3a3f70d.js.map"
+}
