@@ -44,7 +44,6 @@ class OrdersTest < ApplicationSystemTestCase
 
     assert_text "Order was successfully destroyed"
   end
-<<<<<<< HEAD
 
   # This test will not work for now because of webpack issue of not rendering component first time
   test "check routing number" do
@@ -66,6 +65,4 @@ class OrdersTest < ApplicationSystemTestCase
     ## Checking if element with if #order_routing_number is on screen
     assert_selector "#order_routing_number"
   end
-=======
->>>>>>> cecf783eb658c639daa971c75278567264d5551a
 end
