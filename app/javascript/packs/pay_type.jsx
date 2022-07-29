@@ -1,0 +1,14 @@
+// File responsible to bootstrap React component and get it onto page
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+// This will look for app/javascript/PayTypeSelector/index.jsx as configured in Webpack
+import PayTypeSelector from 'PayTypeSelector';
+
+document.addEventListener('DOMContentLoaded', () => {
+  // This code will execute only after entire DOM has loaded
+
+  let element = document.getElementById("pay-type-component");
+  // Bootstraping React component in DOM element
+  ReactDOM.render(<PayTypeSelector />, element);
+});
