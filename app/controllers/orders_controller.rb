@@ -84,6 +84,7 @@ class OrdersController < ApplicationController
       params.require(:order).permit(:name, :address, :email, :pay_type)
     end
 
+<<<<<<< HEAD
     # returns params relevant to chosen pay type
     def pay_type_params
       if order_params[:pay_type] == "Credit card"
@@ -97,6 +98,8 @@ class OrdersController < ApplicationController
       end
     end
 
+=======
+>>>>>>> cecf783eb658c639daa971c75278567264d5551a
     def ensure_cart_isnt_empty
       # If cart is empty, redirect user to store index page
       if @cart.line_items.empty?

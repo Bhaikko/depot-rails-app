@@ -22,10 +22,15 @@ module.exports = function(api) {
         {
           targets: {
             node: 'current'
+<<<<<<< HEAD
           },
           modules: 'commonjs'
         },
         '@babel/preset-react'
+=======
+          }
+        }
+>>>>>>> cecf783eb658c639daa971c75278567264d5551a
       ],
       (isProductionEnv || isDevelopmentEnv) && [
         '@babel/preset-env',
@@ -36,6 +41,7 @@ module.exports = function(api) {
           modules: false,
           exclude: ['transform-typeof-symbol']
         }
+<<<<<<< HEAD
       ],
       [
         '@babel/preset-react',
@@ -43,6 +49,8 @@ module.exports = function(api) {
           development: isDevelopmentEnv || isTestEnv,
           useBuiltIns: true
         }
+=======
+>>>>>>> cecf783eb658c639daa971c75278567264d5551a
       ]
     ].filter(Boolean),
     plugins: [
@@ -77,9 +85,13 @@ module.exports = function(api) {
       [
         '@babel/plugin-transform-runtime',
         {
+<<<<<<< HEAD
           helpers: false,
           regenerator: true,
           corejs: false
+=======
+          helpers: false
+>>>>>>> cecf783eb658c639daa971c75278567264d5551a
         }
       ],
       [
@@ -87,12 +99,15 @@ module.exports = function(api) {
         {
           async: false
         }
+<<<<<<< HEAD
       ],
       isProductionEnv && [
         'babel-plugin-transform-react-remove-prop-types',
         {
           removeImport: true
         }
+=======
+>>>>>>> cecf783eb658c639daa971c75278567264d5551a
       ]
     ].filter(Boolean)
   }
