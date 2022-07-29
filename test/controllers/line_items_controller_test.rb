@@ -29,6 +29,20 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'td', "Programming Ruby 1.9"
   end
 
+  test "should create line_item via ajax" do
+    # By-default, assert_difference checks +1
+    assert_difference('LineItem.count') do
+      # xhr request makes XMLHttpRequest, in which in response
+      # response object expected instead of redirect 
+      post line_items_url, params: { product_id: products(:ruby).id }, xhr: true
+    end
+
+    assert_response :success
+    # Checking if line-item-highlight class added to newly added class item
+    # @response contanins javascript recieved
+    assert_match /<tr class=\\"line-item-highlight/, @response.body
+  end
+
   test "should show line_item" do
     get line_item_url(@line_item)
     assert_response :success
@@ -60,7 +74,8 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
 
   ## test to ensure product in a cart cannot be deleted
   test "can't delete product in cart" do
-    ## checks the args value with value returned by block
+    ## verifies that the result of evaluating its first arguement
+    # changes by amount passed in second argument after executing block
     assert_difference('Product.count', 0) do
       delete product_url(products(:two))
     end

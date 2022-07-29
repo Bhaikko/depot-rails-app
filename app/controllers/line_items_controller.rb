@@ -35,7 +35,13 @@ class LineItemsController < ApplicationController
     respond_to do |format|
       if @line_item.save
         format.html { 
-          redirect_to @line_item.cart  # redirect user to cart once line item created
+          redirect_to store_index_url # Refreshing store page everytime item added
+        }
+
+        # response based on AJAX request
+        # Will tell ruby to look for create.js.erb
+        format.js {
+          @current_item = @line_item
         }
 
         format.json { 
