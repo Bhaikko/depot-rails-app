@@ -1,7 +1,8 @@
 class Product < ApplicationRecord
   IMAGE_VALIDATION_REGEX = %r{\.(gif|jpg|png)\z}i.freeze
-  NO_SPACE_AND_SPL_CHARACTER_REGEX = /\A[a-z0-9-]+\z/.freeze
+  NO_SPACE_AND_SPL_CHARACTER_REGEX = /\A[a-z0-9-]+\z/i.freeze
   MIN_3_WORDS_SEP_BY_HYPEN_REGEX = /\w+-\w+-\w+/.freeze
+  MATCH_WORD_REGEX = /[a-z0-9]+/i.freeze
 
   has_many :line_items
   # specifying indirect relationship through another entity
@@ -13,7 +14,9 @@ class Product < ApplicationRecord
   validates :title, :description, :image_url, presence: true
 
   # Adding validation related to price being positive number
-  validates :price, numericality: { greater_than_or_equal_to: 0.01 }
+  validates :price, 
+    numericality: { greater_than_or_equal_to: 0.01 }, 
+    unless: -> (x) { x.blank? }
 
   # Validation for title being unique
   validates :title, uniqueness: true
@@ -32,7 +35,12 @@ class Product < ApplicationRecord
   } 
   
   validates_each :permalink do |record, attr, value|
-    record.errors.add :permalink, "should have minimum 3 words, separated by hyphen" if value.split('-').length < 3
+    record.errors.add :permalink, "should have minimum 3 words, separated by hyphen" if value.blank? || value.split('-').length < 3
+  end
+
+  validates_each :description do |record, attr, value|
+    num_of_words = value.scan(MATCH_WORD_REGEX).length
+    record.errors.add :description, "should have between 5 and 10 words" if num_of_words < 5 || num_of_words > 10
   end
 
   ## Creating hook method, executed before rails attempt to destory row in database
