@@ -1,5 +1,8 @@
 class Product < ApplicationRecord
   IMAGE_VALIDATION_REGEX = %r{\.(gif|jpg|png)\z}i.freeze
+  NO_SPACE_AND_SPL_CHARACTER_REGEX = /\A[a-z0-9-]+\z/.freeze
+  MIN_3_WORDS_SEP_BY_HYPEN_REGEX = /\w+-\w+-\w+/.freeze
+
   has_many :line_items
   # specifying indirect relationship through another entity
   has_many :orders, through: :line_items
@@ -20,6 +23,17 @@ class Product < ApplicationRecord
     with:   IMAGE_VALIDATION_REGEX,
     message: 'must be a URL for GIF, JPG, or PNG image.'
   }
+
+  validates :permalink, uniqueness: {
+    message: "Should be unique"
+  }, format: {
+    with: NO_SPACE_AND_SPL_CHARACTER_REGEX,
+    message: "cannot have special character and no space allowed"
+  } 
+  
+  validates_each :permalink do |record, attr, value|
+    record.errors.add :permalink, "should have minimum 3 words, separated by hyphen" if value.split('-').length < 3
+  end
 
   ## Creating hook method, executed before rails attempt to destory row in database
   private def ensure_not_referenced_by_any_line_item
