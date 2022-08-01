@@ -15,8 +15,11 @@ class Product < ApplicationRecord
 
   # Adding validation related to price being positive number
   validates :price, 
-    numericality: { greater_than_or_equal_to: 0.01 }, 
-    unless: -> (x) { x.blank? }
+    numericality: { 
+      greater_than: :discount_price,
+      message: "must be greater than Discount price"
+    }, 
+    unless: -> (x) { x.price.blank? }
 
   # Validation for title being unique
   validates :title, uniqueness: true
