@@ -5,9 +5,13 @@ class LineItem < ApplicationRecord
   belongs_to :product
   belongs_to :cart, optional: true
 
+  validates :product, uniqueness: { 
+    scope: :cart,
+    message: "has already been taken in Cart."
+  }
+
   ## Adding total_price method in model as model provides data to view 
   def total_price
     product.price * quantity
   end
-
 end
