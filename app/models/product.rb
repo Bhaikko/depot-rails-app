@@ -43,6 +43,8 @@ class Product < ApplicationRecord
     record.errors.add :description, "should have between 5 and 10 words" if num_of_words < 5 || num_of_words > 10
   end
 
+  validates :image_url, url: true
+
   ## Creating hook method, executed before rails attempt to destory row in database
   private def ensure_not_referenced_by_any_line_item
     # ensure that there are no line items referencing this product
