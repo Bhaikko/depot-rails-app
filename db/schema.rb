@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_29_161811) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_29_164553) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -108,7 +108,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_29_161811) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
+    t.text "name"
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

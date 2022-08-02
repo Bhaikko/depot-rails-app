@@ -1,15 +1,16 @@
 class IrreversibleMigration < ActiveRecord::Migration[7.0]
-  def up
-    User.create(
-      name: "useradmin",
-      password: BCrypt::Password.create("password"),
-      email: "useradmin@useradmin.com"
-    )
-  end
+  def change
+    change_column :users, :name, :text
 
-  def down
-    # raise ActiveRecord::IrreversibleMigration, "Cannot Rollback Migration #{self.class}"
+    ## To create above changes reversible
+    # reversible do |dir|
+    #   dir.up do
+    #     change_column :users, :name, :string
+    #   end
 
-    # User.destroy(name: "useradmin")
+    #   dir.down do
+    #     change_column :users, :name, :string
+    #   end
+    # end
   end
 end
