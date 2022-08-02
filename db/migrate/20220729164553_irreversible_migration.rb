@@ -8,7 +8,7 @@ class IrreversibleMigration < ActiveRecord::Migration[7.0]
   end
 
   def down
-    raise ActiveRecord::IrreversibleMigration, "Cannot Rollback Migration #{self.class}"
+    # raise ActiveRecord::IrreversibleMigration, "Cannot Rollback Migration #{self.class}"
 
     # User.destroy(name: "useradmin")
   end
