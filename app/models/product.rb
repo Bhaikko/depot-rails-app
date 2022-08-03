@@ -53,6 +53,14 @@ class Product < ApplicationRecord
     image_url: true,
     allow_blank: true
 
+  after_initialize do |product|
+    product.title = 'abc' if product.title.blank?
+  end
+
+  before_save do |product|
+    product.discount_price = product.price if product.discount_price.blank?
+  end
+
   private def ensure_not_referenced_by_any_line_item
     unless line_items.empty?
       errors.add(:base, 'Line Items present')
