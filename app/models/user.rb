@@ -11,6 +11,10 @@ class User < ApplicationRecord
   ## Creating Transaction/Trigger that will rollback when last user deleted
   after_destroy :ensure_an_admin_remains
 
+  after_commit do |user|
+    UserMailer.welcome(user)
+  end
+
   class Error < StandardError
   end
 
