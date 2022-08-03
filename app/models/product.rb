@@ -21,6 +21,14 @@ class Product < ApplicationRecord
     message: 'must be a URL for GIF, JPG, or PNG image.'
   }
 
+  after_initialize do |product|
+    product.title = 'abc' if product.title.blank?
+  end
+
+  before_save do |product|
+    product.discount_price = product.price if product.discount_price.blank?
+  end
+
   ## Creating hook method, executed before rails attempt to destory row in database
   private def ensure_not_referenced_by_any_line_item
     # ensure that there are no line items referencing this product
