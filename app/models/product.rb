@@ -4,10 +4,8 @@ class Product < ApplicationRecord
 
   DEFAULT_TITLE = 'abc'.freeze
 
-  has_many :line_items
+  has_many :line_items, dependent: :restrict_with_exception
   has_many :orders, through: :line_items
-
-  before_destroy :ensure_not_referenced_by_any_line_item
 
   validates :title, :description, :image_url, :price, :discount_price, presence: true
 
