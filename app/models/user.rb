@@ -11,7 +11,7 @@ class User < ApplicationRecord
   }
 
   before_destroy :ensure_not_admin
-
+ 
   after_destroy :ensure_an_admin_remains
 
   after_create_commit :send_welcome_mail
