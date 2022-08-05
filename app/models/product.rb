@@ -98,4 +98,6 @@ class Product < ApplicationRecord
   private def decrement_parent_category_products_count
     category.parent.decrement!(:products_count)
   end
+
+  scope :enabled_products, -> { where(enabled: true) }
 end
