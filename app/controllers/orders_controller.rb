@@ -36,10 +36,15 @@ class OrdersController < ApplicationController
   # POST /orders or /orders.json
   def create
     @order = Order.new(order_params)
-    # Adding items from current cart to order
     @order.add_line_items_from_cart(@cart)
 
     respond_to do |format|
+      if session.has_key?(:user_id)
+        @order.user_id = session[:user_id]
+      else
+        format.html { redirect_to login_path, alert: "Please login before placing order" }
+      end
+
       if @order.save
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
