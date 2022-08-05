@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   include ::Exceptions::User
 
+  has_many :orders, dependent: :destroy
+
   validates :name, presence: true, uniqueness: true
 
   # Validates that the two passwords match in field
