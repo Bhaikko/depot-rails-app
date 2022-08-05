@@ -80,4 +80,6 @@ class Product < ApplicationRecord
   end
 
   scope :enabled_products, -> { where(enabled: true) }
+  scope :taken_products, -> { joins(:line_items).distinct }
+  scope :taken_products_titles, -> { taken_products.pluck(:title) }
 end
