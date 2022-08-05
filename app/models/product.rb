@@ -78,4 +78,6 @@ class Product < ApplicationRecord
   private def words_in_permalink_separated_by_hypen
     permalink.split('-').length
   end
+
+  scope :enabled_products, -> { where(enabled: true) }
 end
