@@ -3,7 +3,7 @@ class LineItem < ApplicationRecord
   # Using these, product and cart info can be retrieved using line_item
   belongs_to :order, optional: true
   belongs_to :product
-  belongs_to :cart, optional: true
+  belongs_to :cart, optional: true, counter_cache: true
 
   ## Adding total_price method in model as model provides data to view 
   def total_price
