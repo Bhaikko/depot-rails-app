@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_07_140146) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_07_145227) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -105,6 +105,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_07_140146) do
     t.boolean "enabled", default: false
     t.decimal "discount_price"
     t.string "permalink"
+    t.integer "category_id"
+    t.index ["category_id"], name: "index_products_on_category_id"
   end
 
   create_table "support_requests", force: :cascade do |t|
@@ -132,5 +134,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_07_140146) do
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
   add_foreign_key "orders", "users"
+  add_foreign_key "products", "categories"
   add_foreign_key "support_requests", "orders"
 end
