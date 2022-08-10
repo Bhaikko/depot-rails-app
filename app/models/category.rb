@@ -3,14 +3,16 @@ class Category < ApplicationRecord
   
   has_many :sub_categories, 
     class_name: 'Category',
-    foreign_key: 'parent_id'
+    foreign_key: 'parent_id',
+    dependent: :destroy
 
-  has_many :products
+  has_many :products, dependent: :restrict_with_error
 
   has_many :sub_categories_products,
     through: :sub_categories,
-    source: :products
-
+    source: :products,
+    dependent: :restrict_with_error
+    
   validates :name, presence: true
 
   validates :name, 
