@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_07_145227) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_10_112932) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -69,6 +69,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_07_145227) do
     t.bigint "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "products_count"
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
