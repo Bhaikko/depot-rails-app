@@ -32,21 +32,22 @@ class Product < ApplicationRecord
     message: 'must be a URL for GIF, JPG, or PNG image.'
   }
 
-  validates :permalink, uniqueness: {
-    message: "Should be unique"
-  }, format: {
-    with: ALPHA_NUMERIC_HYPHEN_REGEX,
-    message: "cannot have special character and no space allowed"
-  } 
-  
-  validates_each :permalink do |record, attr, value|
-    record.errors.add :permalink, "should have minimum 3 words, separated by hyphen" if value.blank? || value.split('-').length < 3
-  end
+  validates :permalink, 
+    uniqueness: {
+      message: "Should be unique"
+    }, 
+    format: {
+      with: ALPHA_NUMERIC_HYPHEN_REGEX,
+      message: "cannot have special character and no space allowed"
+    },
+    if: -> (x) { x.permalink? }
 
-  validates_each :description do |record, attr, value|
-    num_of_words = value.scan(ALPHA_NUMERIC_REGEX).length
-    record.errors.add :description, "should have between 5 and 10 words" if num_of_words < 5 || num_of_words > 10
-  end
+  validates_length_of :words_in_description, in: 5..10, message: 'should be between 5 and 10 words'
+
+  validates :words_in_permalink_separated_by_hypen,
+    comparison: {
+      greater_than_or_equal_to: 3
+    }
 
   validates :image_url, url: true
 
@@ -55,5 +56,13 @@ class Product < ApplicationRecord
       errors.add(:base, 'Line Items present')
       throw :abort
     end
+  end
+
+  private def words_in_description
+    description.scan(ALPHA_NUMERIC_REGEX)
+  end
+
+  private def words_in_permalink_separated_by_hypen
+    permalink.split('-').length
   end
 end
