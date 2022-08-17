@@ -4,8 +4,10 @@ class User < ApplicationRecord
   has_many :orders, dependent: :destroy
   has_many :line_items, through: :orders
   has_one :address, dependent: :destroy
-
+  
   has_secure_password
+
+  accepts_nested_attributes_for :address
 
   validates :name, :email, presence: true, uniqueness: true
   validates :email, uniqueness: true, format: {
