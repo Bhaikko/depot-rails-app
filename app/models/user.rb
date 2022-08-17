@@ -3,6 +3,7 @@ class User < ApplicationRecord
   
   has_many :orders, dependent: :destroy
   has_many :line_items, through: :orders
+  has_one :address, dependent: :destroy
 
   has_secure_password
 
