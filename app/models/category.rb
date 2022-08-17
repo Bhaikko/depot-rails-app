@@ -25,4 +25,6 @@ class Category < ApplicationRecord
     current_parent = record.parent
     record.errors.add attr, "can have only one level of nesting" if current_parent && current_parent.parent
   end
+
+  scope :categories_with_subcategories, -> { includes(:sub_categories).where(parent_id: nil) }
 end
