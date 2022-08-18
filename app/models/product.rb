@@ -27,11 +27,6 @@ class Product < ApplicationRecord
 
   validates :title, uniqueness: true
 
-  validates :image_url, format: {
-    with:   IMAGE_VALIDATION_REGEX,
-    message: 'must be a URL for GIF, JPG, or PNG image.'
-  }
-
   validates :permalink, 
     uniqueness: {
       message: "Should be unique",
@@ -54,7 +49,9 @@ class Product < ApplicationRecord
       greater_than_or_equal_to: 3
     }
 
-  validates :image_url, url: true
+  validates :image_url, 
+    image_url: true,
+    allow_blank: true
 
   private def ensure_not_referenced_by_any_line_item
     unless line_items.empty?
