@@ -12,18 +12,18 @@ class Product < ApplicationRecord
 
   validates :price, 
     numericality: { greater_than: 0 },
-    if: -> (x) { x.price.present? }
+    allow_blank: true
 
   validates :discount_price,
     numericality: { greater_than: 0 },
-    if: -> (x) { x.discount_price.present? }
+    allow_blank: true
     
   validates :price,
     comparison: { 
       greater_than: :discount_price,
       message: 'must be greater than discount price'
     },
-    if: -> (x) { x.discount_price? }
+    allow_blank: true
 
   validates :title, uniqueness: true
 
@@ -34,18 +34,20 @@ class Product < ApplicationRecord
 
   validates :permalink, 
     uniqueness: {
-      message: "Should be unique"
+      message: "Should be unique",
+      case_sensitive: false
     }, 
     format: {
       with: PERMALINK_REGEX,
       message: "cannot have special character and no space allowed"
     },
-    if: -> (x) { x.permalink? }
+    allow_blank: true
 
   validates_length_of :words_in_description, 
     in: 5..10,
     too_short: 'must be more than 5',
-    too_long: 'must be less than 10'
+    too_long: 'must be less than 10',
+    allow_blank: true
 
   validates :words_in_permalink_separated_by_hypen,
     comparison: {
