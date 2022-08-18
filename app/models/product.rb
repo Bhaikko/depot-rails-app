@@ -1,7 +1,7 @@
 class Product < ApplicationRecord
   IMAGE_VALIDATION_REGEX = %r{\.(gif|jpg|png)\z}i.freeze
-  ALPHA_NUMERIC_HYPHEN_REGEX = /\A[a-z0-9-]+\z/i.freeze
-  ALPHA_NUMERIC_REGEX = /[a-z0-9]+/i.freeze
+  PERMALINK_REGEX = /\A[a-z0-9-]+\z/i.freeze
+  DESCRIPTION_WORDS_REGEX = /[a-z0-9]+/i.freeze
 
   has_many :line_items
   has_many :orders, through: :line_items
@@ -37,12 +37,15 @@ class Product < ApplicationRecord
       message: "Should be unique"
     }, 
     format: {
-      with: ALPHA_NUMERIC_HYPHEN_REGEX,
+      with: PERMALINK_REGEX,
       message: "cannot have special character and no space allowed"
     },
     if: -> (x) { x.permalink? }
 
-  validates_length_of :words_in_description, in: 5..10, message: 'should be between 5 and 10 words'
+  validates_length_of :words_in_description, 
+    in: 5..10,
+    too_short: 'must be more than 5',
+    too_long: 'must be less than 10'
 
   validates :words_in_permalink_separated_by_hypen,
     comparison: {
@@ -59,7 +62,7 @@ class Product < ApplicationRecord
   end
 
   private def words_in_description
-    description.scan(ALPHA_NUMERIC_REGEX)
+    description.scan(DESCRIPTION_WORDS_REGEX)
   end
 
   private def words_in_permalink_separated_by_hypen
