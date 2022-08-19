@@ -2,15 +2,14 @@ class User < ApplicationRecord
   include ::Exceptions::User
 
   has_many :orders, dependent: :destroy
+  has_many :line_items, through: :orders
 
   validates :name, presence: true, uniqueness: true
 
-  # Validates that the two passwords match in field
   has_secure_password
 
   before_destroy :ensure_not_admin
   
-  ## Creating Transaction/Trigger that will rollback when last user deleted
   after_destroy :ensure_an_admin_remains
 
   after_create_commit do |user|
