@@ -65,11 +65,13 @@ class UsersController < ApplicationController
   end
 
   def orders
-    @orders = current_user.orders.includes(line_items: :product)
+    @orders = @user.orders.includes(line_items: :product)
+    render layout: 'user_orders'
   end
 
   def line_items
-    @line_items = current_user.line_items.page(params[:page]).per(MAX_LINE_ITEMS_ON_PAGE)
+    @line_items = @user.line_items.page(params[:page]).per(MAX_LINE_ITEMS_ON_PAGE)
+    render layout: 'user_orders'
   end
 
   rescue_from 'User::Error' do |exception|
