@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   root 'store#index', as: 'store_index'
 
   get 'admin' => 'admin#index'
-  get '/users/orders', to: 'orders#user_orders'
   
   controller :sessions do
     get 'login' => :new
@@ -10,7 +9,9 @@ Rails.application.routes.draw do
     delete 'logout' => :destroy
   end
 
-  resources :users
+  resources :users do 
+    get 'orders', on: :collection, to: 'orders#user_orders'
+  end
   resources :orders
   resources :line_items
   resources :carts
