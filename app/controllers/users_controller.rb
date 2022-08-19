@@ -74,6 +74,10 @@ class UsersController < ApplicationController
     render layout: 'user_orders'
   end
 
+  def line_items
+    @line_items = User.find(session[:user_id]).line_items
+  end
+
   rescue_from 'User::Error' do |exception|
     redirect_to users_urls, notice: exception.message
   end
