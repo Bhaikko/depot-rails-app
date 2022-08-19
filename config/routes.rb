@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :users do 
     collection do
       get 'orders'
+      get 'line_items'
     end
   end
   resources :orders
