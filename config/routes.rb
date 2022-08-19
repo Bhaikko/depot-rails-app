@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   end
 
   resources :users do 
-    get 'orders', on: :collection, to: 'orders#user_orders'
+    collection do
+      get 'orders'
+    end
   end
   resources :orders
   resources :line_items
