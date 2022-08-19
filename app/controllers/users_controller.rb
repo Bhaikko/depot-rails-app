@@ -66,6 +66,10 @@ class UsersController < ApplicationController
     @orders_with_line_items_and_products = @user.orders.includes(line_items: :product)
   end
 
+  def line_items
+    @line_items = User.find(session[:user_id]).line_items
+  end
+
   rescue_from 'User::Error' do |exception|
     redirect_to users_urls, notice: exception.message
   end
