@@ -1,5 +1,9 @@
 class User < ApplicationRecord
-  validates :name, presence: true, uniqueness: true
+  validates :name, :email, presence: true, uniqueness: true
+
+  validates :email, uniqueness: true, format: {
+    with: VALID_EMAIL_REGEX
+  }
 
   # Validates that the two passwords match in field
   has_secure_password
