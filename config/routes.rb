@@ -25,4 +25,8 @@ Rails.application.routes.draw do
   end
 
   resources :support_requests, only: [ :index, :update ]
+
+  namespace :admin do
+    get 'reports', to: 'reports#index'
+  end
 end
