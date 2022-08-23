@@ -1,4 +1,6 @@
 class Admin::ReportsController < ApplicationController
+  before_action :authorize_admin
+
   def index
     @from = params[:from]
     @to = params[:to]

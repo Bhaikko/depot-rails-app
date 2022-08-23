@@ -10,4 +10,10 @@ class ApplicationController < ActionController::Base
   protected def current_user
     @logged_in_user ||= User.find_by(id: session[:user_id])
   end
+
+  protected def authorize_admin
+    unless current_user.admin?
+      redirect_to store_index_path, notice: "You don't have privilege to access this section"
+    end
+  end
 end
