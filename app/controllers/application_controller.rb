@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  before_action :update_hit_counter, only: [:index, :show, :edit, :new]
   before_action :authorize
 
   protected def authorize
@@ -15,5 +16,14 @@ class ApplicationController < ActionController::Base
     unless current_user.admin?
       redirect_to store_index_path, notice: "You don't have privilege to access this section"
     end
+  end
+
+  protected def update_hit_counter
+    if user = User.where(id: session[:user_id]).first
+      user.hit_count.increment!(:count)
+      @user_hit_count = user.hit_count.count
+    end
+
+    @total_hit_count = HitCount.total_hit_count
   end
 end
