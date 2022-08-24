@@ -1,4 +1,8 @@
 class ApplicationController < ActionController::Base
+  include Timer
+
+  around_action :attach_time_in_header
+
   before_action :update_hit_counter, only: [:index, :show, :edit, :new]
   before_action :authorize
 
@@ -25,5 +29,11 @@ class ApplicationController < ActionController::Base
     end
 
     @total_hit_count = HitCount.total_hit_count
+  end
+
+  protected def attach_time_in_header
+    start_timer
+    yield
+    response.header['X-Responded-In'] = time_elapsed_in_milliseconds
   end
 end
