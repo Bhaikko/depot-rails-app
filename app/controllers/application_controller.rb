@@ -2,9 +2,10 @@ class ApplicationController < ActionController::Base
   include Timer
 
   around_action :attach_time_in_header
-
+  
   before_action :update_hit_counter, only: [:index, :show, :edit, :new]
   before_action :authorize
+  before_action :attach_ip_in_header
 
   protected def authorize
     unless current_user
@@ -35,5 +36,9 @@ class ApplicationController < ActionController::Base
     start_timer
     yield
     response.header['X-Responded-In'] = time_elapsed_in_milliseconds
+  end
+
+  protected def attach_ip_in_header
+    @client_ip = request.ip
   end
 end
