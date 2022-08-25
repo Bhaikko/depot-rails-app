@@ -1,5 +1,5 @@
 class UserMailer < ApplicationMailer
-  default from: 'admin@depot.com'
+  default from: ADMIN_EMAIL
 
   def welcome(user)
     @user = user

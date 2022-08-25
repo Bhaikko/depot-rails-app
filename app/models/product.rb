@@ -1,10 +1,8 @@
 class Product < ApplicationRecord
-  IMAGE_VALIDATION_REGEX = %r{\.(gif|jpg|png)\z}i.freeze
   PERMALINK_REGEX = /\A[a-z0-9-]+\z/i.freeze
   DESCRIPTION_WORDS_REGEX = /[a-z0-9]+/i.freeze
 
   DEFAULT_TITLE = 'abc'.freeze
-
 
   has_many :line_items
   has_many :orders, through: :line_items

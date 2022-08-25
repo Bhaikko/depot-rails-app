@@ -1,8 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
 
-  rescue_from Exceptions::User::AdminImmutableException, with: :admin_update_not_allowed
-
   # GET /users or /users.json
   def index
     @users = User.order(:name)
@@ -58,11 +56,16 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    @user.destroy
-
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: "User was successfully destroyed." }
-      format.json { head :no_content }
+    if @user.destroy
+      respond_to do |format|
+        format.html { redirect_to users_url, notice: "User was successfully destroyed." }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to users_url, notice: @user.errors[:base].first }
+        format.json { head :no_content }
+      end
     end
   end
 
@@ -81,9 +84,5 @@ class UsersController < ApplicationController
     # Only allow a list of trusted parameters through.
     def user_params
       params.require(:user).permit(:name, :password, :password_confirmation, :email)
-    end
-
-    def admin_update_not_allowed
-      redirect_to user_url(@user), notice: 'Cannot update admin account'
     end
 end

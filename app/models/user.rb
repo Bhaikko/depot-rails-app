@@ -16,6 +16,10 @@ class User < ApplicationRecord
 
   before_update :ensure_not_admin
 
+  def admin?
+    email_was == ADMIN_EMAIL
+  end
+
   private def ensure_an_admin_remains
     if User.count.zero?
       raise Error.new "Cant't delete last user"
@@ -23,7 +27,10 @@ class User < ApplicationRecord
   end
 
   private def ensure_not_admin
-    raise AdminImmutableException if email_was == 'admin@depot.com'
+    if admin?
+      errors.add(:base, 'Cannot update admin account')
+      throw :abort
+    end
   end
 
   private def send_mail_to_new_user
