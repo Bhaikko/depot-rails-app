@@ -1,10 +1,12 @@
 class ApplicationController < ActionController::Base
   include Timer
+  include SessionHandler
 
   around_action :attach_time_in_header
   
   before_action :update_hit_counter, only: [:index, :show, :edit, :new]
   before_action :authorize
+  before_action :logout_if_inactive, if: :user_session_exists?
   before_action :attach_ip_in_header
 
   protected def authorize
@@ -24,7 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   protected def update_hit_counter
-    if user = User.where(id: session[:user_id]).first
+    if user = User.find_by(id: session[:user_id])
       user.hit_count.increment!(:count)
       @user_hit_count = user.hit_count.count
     end
@@ -40,5 +42,13 @@ class ApplicationController < ActionController::Base
 
   protected def attach_ip_in_header
     @client_ip = request.ip
+  end
+
+  protected def logout_if_inactive
+    if Time.current - session[:last_request_time].to_time >= 300
+      logout
+    else
+      session[:last_request_time] = Time.current
+    end
   end
 end
