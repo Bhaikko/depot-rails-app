@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
 
+  rescue_from Exceptions::User::AdminImmutableException, with: :admin_update_not_allowed
+
   # GET /users or /users.json
   def index
     @users = User.order(:name)
@@ -79,5 +81,9 @@ class UsersController < ApplicationController
     # Only allow a list of trusted parameters through.
     def user_params
       params.require(:user).permit(:name, :password, :password_confirmation, :email)
+    end
+
+    def admin_update_not_allowed
+      redirect_to user_url(@user), notice: 'Cannot update admin account'
     end
 end

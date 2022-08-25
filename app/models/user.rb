@@ -1,6 +1,7 @@
 class User < ApplicationRecord
+  include Exceptions::User
+  
   validates :name, :email, presence: true, uniqueness: true
-
   validates :email, uniqueness: true, format: {
     with: EMAIL_REGEX
   }
