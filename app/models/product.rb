@@ -3,6 +3,9 @@ class Product < ApplicationRecord
   PERMALINK_REGEX = /\A[a-z0-9-]+\z/i.freeze
   DESCRIPTION_WORDS_REGEX = /[a-z0-9]+/i.freeze
 
+  DEFAULT_TITLE = 'abc'.freeze
+
+
   has_many :line_items
   has_many :orders, through: :line_items
 
@@ -53,12 +56,14 @@ class Product < ApplicationRecord
     image_url: true,
     allow_blank: true
 
-  after_initialize do |product|
-    product.title = 'abc' if product.title.blank?
-  end
+  before_validation :assign_default_title
 
   before_save do |product|
     product.discount_price = product.price if product.discount_price.blank?
+  end
+
+  def assign_default_title
+    self.title = DEFAULT_TITLE if title.blank?
   end
 
   private def ensure_not_referenced_by_any_line_item
