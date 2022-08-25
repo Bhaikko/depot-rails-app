@@ -57,13 +57,14 @@ class Product < ApplicationRecord
     allow_blank: true
 
   before_validation :assign_default_title
+  before_validation :assign_discount_if_not_present
 
-  before_save do |product|
-    product.discount_price = product.price if product.discount_price.blank?
+  private def assign_default_title
+    self.title = DEFAULT_TITLE if title.blank?
   end
 
-  def assign_default_title
-    self.title = DEFAULT_TITLE if title.blank?
+  private def assign_discount_if_not_present
+    self.discount_price = price if discount_price.blank?
   end
 
   private def ensure_not_referenced_by_any_line_item
