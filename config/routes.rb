@@ -29,4 +29,8 @@ Rails.application.routes.draw do
   namespace :admin do
     get 'reports', to: 'reports#index'
   end
+
+  scope 'admin' do 
+    get 'categories', to: 'categories#admin_categories'
+  end
 end
