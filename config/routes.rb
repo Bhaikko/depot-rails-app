@@ -28,4 +28,8 @@ Rails.application.routes.draw do
     get 'categories', to: 'categories#index'
     get '/', to: redirect('/admin/reports')
   end
+
+  scope 'admin' do 
+    get 'categories', to: 'categories#admin_categories'
+  end
 end
