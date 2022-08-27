@@ -10,3 +10,6 @@
   
   <%= render @line_items %>
 </table>
+
+<%= link_to 'Prev Page', line_items_users_path(page: @page - 1) if @page > 0 %>
+<%= link_to 'Next Page', line_items_users_path(page: @page + 1) if @page < @max_pages %>
