@@ -54,15 +54,15 @@ class Product < ApplicationRecord
     image_url: true,
     allow_blank: true
 
-  before_validation :assign_default_title
-  before_validation :assign_discount_if_not_present
+  before_validation :assign_default_title, unless: :title?
+  before_validation :assign_default_discount, unless: :discount_price?
 
   private def assign_default_title
-    self.title = DEFAULT_TITLE if title.blank?
+    self.title = DEFAULT_TITLE
   end
 
-  private def assign_discount_if_not_present
-    self.discount_price = price if discount_price.blank?
+  private def assign_default_discount
+    self.discount_price = price
   end
 
   private def ensure_not_referenced_by_any_line_item
