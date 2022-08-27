@@ -7,7 +7,7 @@ class UserMailerTest < ActionMailer::TestCase
 
     assert_equal "Welcome #{user.name} to The Pragmatic Bookshelf", mail.subject
     assert_equal [user.email], mail.to
-    assert_equal ["admin@depot.com"], mail.from
+    assert_equal [ADMIN_EMAIL], mail.from
     assert_match /Welcome/, mail.body.encoded
   end
 end

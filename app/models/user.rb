@@ -12,12 +12,12 @@ class User < ApplicationRecord
   
   after_destroy :ensure_an_admin_remains
 
-  after_create_commit :send_mail_to_new_user
+  after_create_commit :send_welcome_mail
 
   before_update :ensure_not_admin
 
   def admin?
-    email_was == ADMIN_EMAIL
+    email == ADMIN_EMAIL
   end
 
   private def ensure_an_admin_remains
@@ -33,7 +33,7 @@ class User < ApplicationRecord
     end
   end
 
-  private def send_mail_to_new_user
+  private def send_welcome_mail
     UserMailer.welcome(self).deliver_now
   end
 end
