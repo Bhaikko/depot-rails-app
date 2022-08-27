@@ -58,17 +58,8 @@ class Product < ApplicationRecord
   before_validation :assign_default_title, unless: :title?
   before_validation :assign_default_discount, unless: :discount_price?
   
-  after_create_commit do |product|
-    product.category.parent.increment!(:products_count) if product.category.parent
-  end
-  
-  after_destroy_commit do |product|
-    product.category.parent.decrement!(:products_count) if product.category.parent
-  end
-  
-  before_save do |product|
-    product.discount_price = product.price if product.discount_price.blank?
-  end
+  after_create_commit :increment_parent_category_products_count, if: -> { category.parent }
+  after_destroy_commit :decrement_parent_category_products_count, if: -> { category.parent }
   
   scope :enabled_products, -> { where(enabled: true) }
   scope :taken_products, -> { joins(:line_items).distinct }
@@ -98,5 +89,13 @@ class Product < ApplicationRecord
 
   private def words_in_permalink_separated_by_hypen
     permalink.split('-').length
+  end
+
+  private def increment_parent_category_products_count
+    category.parent.increment!(:products_count)
+  end
+
+  private def decrement_parent_category_products_count
+    category.parent.decrement!(:products_count)
   end
 end
