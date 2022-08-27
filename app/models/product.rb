@@ -9,6 +9,7 @@ class Product < ApplicationRecord
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
+  has_many_attached :images, dependent: :destroy
 
   validates :title, :description, :image_url, :price, :discount_price, presence: true
 
@@ -54,6 +55,8 @@ class Product < ApplicationRecord
   validates :image_url, 
     image_url: true,
     allow_blank: true
+
+  validates_length_of :images, maximum: 3, message: 'Cannot upload more than 3 images'
 
   before_validation :assign_default_title, unless: :title?
   before_validation :assign_default_discount, unless: :discount_price?
