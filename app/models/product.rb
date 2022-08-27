@@ -56,7 +56,11 @@ class Product < ApplicationRecord
     image_url: true,
     allow_blank: true
 
-  validates_length_of :images, maximum: 3, message: 'Cannot upload more than 3 images'
+  validates_length_of :images, 
+    minimum: 1, 
+    maximum: 3, 
+    too_short: 'must have atleast one image',
+    too_long: 'cannot have more than 3 images'
 
   before_validation :assign_default_title, unless: :title?
   before_validation :assign_default_discount, unless: :discount_price?
@@ -101,6 +105,4 @@ class Product < ApplicationRecord
   private def decrement_parent_category_products_count
     category.parent.decrement!(:products_count)
   end
-
-  scope :enabled_products, -> { where(enabled: true) }
 end

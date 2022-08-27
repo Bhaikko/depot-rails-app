@@ -1,7 +1,10 @@
-<tr id="<%= dom_id product %>" class="<%= cycle('list_line_odd', 'list_line_even') %>">  
-  <td class="image">
-    <%= image_tag(product.image_url, class: 'list_image') %>
-  </td>
+<tr id="<%= dom_id product %>" class="<%= cycle('list_line_odd', 'list_line_even') %>">
+  <h3>Product Images</h3>
+  <div class="image-container">
+    <% product.images.each do |image| %>
+      <%= image_tag rails_blob_path(image, disposition: 'attachment'), width: '250', height: '250' %>
+    <% end %>
+  </div>
 
   <td class="description">
     <h1><%= product.title %></h1>
