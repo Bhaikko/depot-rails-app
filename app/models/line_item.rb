@@ -6,7 +6,8 @@ class LineItem < ApplicationRecord
   validates :product, uniqueness: { 
     scope: :cart,
     message: "has already been taken in Cart."
-  }
+  }, 
+  if: :cart
 
   def total_price
     product.price * quantity
