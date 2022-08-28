@@ -7,12 +7,7 @@ Rails.application.routes.draw do
     delete 'logout' => :destroy
   end
 
-  resources :users do 
-    collection do
-      get 'orders'
-      get 'line_items'
-    end
-  end
+  resources :users
   resources :orders
   resources :line_items
   resources :carts
@@ -32,4 +27,7 @@ Rails.application.routes.draw do
   scope 'admin' do 
     get 'categories', to: 'categories#admin_categories'
   end
+
+  get 'my-orders', to: 'users#orders'
+  get 'my-items', to: 'users#line_items'  
 end
