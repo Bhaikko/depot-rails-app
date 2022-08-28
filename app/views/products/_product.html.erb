@@ -1,13 +1,17 @@
 <tr id="<%= dom_id product %>" class="<%= cycle('list_line_odd', 'list_line_even') %>">
-  <h3>Product Images</h3>
-  <div class="image-container">
-    <% product.images.each do |image| %>
-      <%= image_tag rails_blob_path(image, disposition: 'attachment'), width: '250', height: '250' %>
-    <% end %>
-  </div>
 
   <td class="description">
     <h1><%= product.title %></h1>
+    <h3>Product Images</h3>
+    <div class="image-container">
+      <% if one_image %>
+        <%= image_tag rails_blob_path(product.images[0], disposition: 'attachment'), width: '250', height: '250' %>
+      <% else %>
+        <% product.images.each do |image| %>
+          <%= image_tag rails_blob_path(image, disposition: 'attachment'), width: '250', height: '250' %>
+        <% end %>
+      <% end %>
+    </div>
     <p>
       <%= format_html_to_overview(product.description, length: 80) %>            
     </p>
