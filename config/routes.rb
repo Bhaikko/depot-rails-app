@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     resources :orders
     resources :line_items
     resources :carts
+    resources :ratings
   
     resources :products, path: '/books' do
       get :who_bought, on: :member
