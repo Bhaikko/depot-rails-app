@@ -12,11 +12,15 @@ Rails.application.routes.draw do
   resources :line_items
   resources :carts
 
-  resources :products do
+  resources :products, path: '/books' do
     get :who_bought, on: :member
   end
 
   resources :support_requests, only: [ :index, :update ]
+  
+  resources :categories do
+    resources :products, path: '/books', as: 'books'
+  end
 
   namespace :admin do
     get 'reports', to: 'reports#index'
