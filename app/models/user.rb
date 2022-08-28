@@ -9,11 +9,8 @@ class User < ApplicationRecord
   has_secure_password
 
   before_destroy :ensure_not_admin
-  
   after_destroy :ensure_an_admin_remains
-
   after_create_commit :send_welcome_mail
-
   before_update :ensure_not_admin
 
   def admin?
