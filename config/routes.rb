@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  CATEGORY_ID_REGEX = /[\d]+/
+
   root 'store#index', as: 'store_index'
   
   controller :sessions do
@@ -19,7 +21,8 @@ Rails.application.routes.draw do
   resources :support_requests, only: [ :index, :update ]
   
   resources :categories do
-    resources :products, path: '/books', as: 'books'
+    resources :products, path: '/books', as: 'books', constraints: { category_id: CATEGORY_ID_REGEX }
+    resources :products, path: '/books', as: 'books', to: redirect('/')
   end
 
   namespace :admin do
