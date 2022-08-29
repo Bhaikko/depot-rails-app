@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   MAX_LINE_ITEMS_ON_PAGE = 3
 
   before_action :set_user, only: %i[ show edit update destroy ]
+  before_action :set_current_user, only: [:orders, :line_items]
 
   def index
     @users = User.order(:name)
@@ -64,19 +65,18 @@ class UsersController < ApplicationController
   end
 
   def orders
-    @user = User.find(session[:user_id])
     @orders_with_line_items_and_products = @user.orders.includes(line_items: :product)
   end
 
   def line_items
     @page = params[:page].to_i || 0
-    @line_items = User.find(session[:user_id])
+    @line_items = @user
       .line_items
       .includes(:product)
       .offset(@page * MAX_LINE_ITEMS_ON_PAGE)
       .limit(MAX_LINE_ITEMS_ON_PAGE)
       
-    @max_pages = User.find(session[:user_id]).line_items.size
+    @max_pages = @user.line_items.size
   end
 
   rescue_from 'User::Error' do |exception|
@@ -90,5 +90,9 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:name, :password, :password_confirmation, :email)
+    end
+
+    def set_current_user
+      @user = User.find(session[:user_id])
     end
 end
