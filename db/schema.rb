@@ -115,16 +115,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_05_075550) do
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
-  create_table "product_user_ratings", id: false, force: :cascade do |t|
-    t.integer "product_id", null: false
-    t.integer "user_id", null: false
-    t.integer "rating", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["product_id"], name: "index_product_user_ratings_on_product_id"
-    t.index ["user_id"], name: "index_product_user_ratings_on_user_id"
-  end
-
   create_table "products", force: :cascade do |t|
     t.string "title"
     t.text "description"
