@@ -1,6 +1,4 @@
 class OrdersController < ApplicationController
-  skip_before_action :authorize, only: [:new, :create]
-
   include CurrentCart
 
   before_action :set_cart, only: [:new, :create]
@@ -24,13 +22,9 @@ class OrdersController < ApplicationController
   def create
     @order = Order.new(order_params)
     @order.add_line_items_from_cart(@cart)
+    @order.user_id = session[:user_id]
 
     respond_to do |format|
-      if session.has_key?(:user_id)
-        @order.user_id = session[:user_id]
-      else
-        format.html { redirect_to login_path, alert: "Please login before placing order" }
-      end
 
       if @order.save
         Cart.destroy(session[:cart_id])
