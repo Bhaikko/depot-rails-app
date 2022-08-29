@@ -34,8 +34,4 @@ Rails.application.routes.draw do
     get 'my-orders', to: 'users#orders'
     get 'my-items', to: 'users#line_items'  
   end
-
-  scope 'admin' do 
-    get 'categories', to: 'categories#admin_categories'
-  end
 end
