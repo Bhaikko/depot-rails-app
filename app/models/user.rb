@@ -1,6 +1,11 @@
 class User < ApplicationRecord
   include Exceptions::User
-  
+
+  enum language: {
+    "English"   => 0,
+    "Hindi"     => 1
+  }
+
   has_many :orders, dependent: :destroy
   has_many :line_items, through: :orders
   has_one :address, as: :addressable, dependent: :destroy
@@ -11,7 +16,10 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :address
 
   validates :name, :email, presence: true, uniqueness: true
-  validates :email, uniqueness: true, format: { with: EMAIL_REGEX }
+  validates :email, format: { with: EMAIL_REGEX }
+  validates :language, inclusion: languages.keys
+
+  has_secure_password
 
   before_destroy :ensure_not_admin
   after_destroy :ensure_an_admin_remains
