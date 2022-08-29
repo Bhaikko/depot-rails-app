@@ -58,7 +58,10 @@ class Product < ApplicationRecord
 
   scope :enabled_products, -> { where(enabled: true) }
   scope :taken_products, -> { joins(:line_items).distinct }
-  scope :taken_products_titles, -> { taken_products.pluck(:title) }
+
+  def self.taken_product_titles
+    taken_products.pluck(:title)
+  end
 
   private def assign_default_title
     self.title = DEFAULT_TITLE
