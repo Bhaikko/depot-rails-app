@@ -1,7 +1,8 @@
 class Product < ApplicationRecord
-  IMAGE_VALIDATION_REGEX = %r{\.(gif|jpg|png)\z}i.freeze
   PERMALINK_REGEX = /\A[a-z0-9-]+\z/i.freeze
   DESCRIPTION_WORDS_REGEX = /[a-z0-9]+/i.freeze
+
+  DEFAULT_TITLE = 'abc'.freeze
 
   has_many :line_items
   has_many :orders, through: :line_items
@@ -52,6 +53,17 @@ class Product < ApplicationRecord
   validates :image_url, 
     image_url: true,
     allow_blank: true
+
+  before_validation :assign_default_title, unless: :title?
+  before_validation :assign_default_discount, unless: :discount_price?
+
+  private def assign_default_title
+    self.title = DEFAULT_TITLE
+  end
+
+  private def assign_default_discount
+    self.discount_price = price
+  end
 
   private def ensure_not_referenced_by_any_line_item
     unless line_items.empty?
