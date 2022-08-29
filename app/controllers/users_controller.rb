@@ -69,14 +69,7 @@ class UsersController < ApplicationController
   end
 
   def line_items
-    @page = params[:page].to_i || 0
-    @line_items = @user
-      .line_items
-      .includes(:product)
-      .offset(@page * MAX_LINE_ITEMS_ON_PAGE)
-      .limit(MAX_LINE_ITEMS_ON_PAGE)
-      
-    @max_pages = @user.line_items.size
+    @line_items = @user.line_items.page(params[:page]).per(MAX_LINE_ITEMS_ON_PAGE)
   end
 
   rescue_from 'User::Error' do |exception|
