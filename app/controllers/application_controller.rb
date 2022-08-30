@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   protected def authorize
     unless current_user
-      redirect_to login_url, alert: "Please log in before proceeding."
+      redirect_to login_url, notice: t('flash.session.login')
     end
   end
 

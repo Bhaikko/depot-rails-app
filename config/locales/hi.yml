@@ -41,3 +41,17 @@ hi:
 
       full_messages:
         format: "%{attribute}%{message}"
+
+  flash:    
+    session:
+      login: 'कृपया लॉगिन करें'
+      no_privilege: 'आपको इस अनुभाग तक पहुंचने का विशेषाधिकार नहीं है'
+
+    notice:
+      successfull_create: 'सफलतापूर्वक बनाया गया था।'
+      successfull_update: 'सफलतापूर्वक अपडेट किया गया था।'
+      successfull_destroy: 'सफलतापूर्वक नष्ट कर दिया गया था।'
+      thank_you_for_order: 'आपके ऑर्डर के लिए धन्यवाद।'
+
+    alert:
+      login_before_order: 'आदेश देने से पहले कृपया लॉगिन करें'
