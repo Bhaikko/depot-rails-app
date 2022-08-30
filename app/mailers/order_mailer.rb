@@ -9,12 +9,14 @@ class OrderMailer < ApplicationMailer
       product_images = product.images.to_a
 
       attachments.inline["#{product.title}_1"] = product_images.shift.download
-      product.images do |image|
-        attachments["#{product.name}_#{image.filename}"] = image.download
+      product_images.each do |image|
+        attachments["#{product.title}_#{image.filename}"] = image.download
       end
     end
 
-    mail to: order.email, subject: 'Pragmatic Store Order Confirmation'
+    I18n.with_locale(User.languages[@order.user.language]) do
+      mail to: order.email, subject: 'Pragmatic Store Order Confirmation'
+    end
   end
 
   def shipped(order)
