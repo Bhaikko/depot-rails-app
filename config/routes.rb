@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     end
   
     get 'my-orders', to: 'users#orders'
-    get 'my-items', to: 'users#line_items'  
-  end  
+    get 'my-items', to: 'users#line_items'
+    post 'language', to: 'users#language', as: 'user_language'
+  end
 end

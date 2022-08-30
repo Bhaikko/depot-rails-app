@@ -2,8 +2,8 @@ class User < ApplicationRecord
   include Exceptions::User
 
   enum language: {
-    "English"   => 0,
-    "Hindi"     => 1
+    "English"   => 'en',
+    "Hindi"     => 'hi'
   }
 
   has_many :orders, dependent: :destroy
