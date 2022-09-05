@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  MAX_LINE_ITEMS_ON_PAGE = 5
+  MAX_LINE_ITEMS_ON_PAGE = 2
 
   before_action :set_user, only: %i[ show edit update destroy ]
 

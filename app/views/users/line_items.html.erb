@@ -7,9 +7,6 @@
       <th scope="col">Total Price</th>
     </tr>
   </thead>
-  
   <%= render @line_items %>
 </table>
-
-<%= link_to_previous_page @line_items, 'Previous Page' %>
-<%= link_to_next_page @line_items, 'Next Page' %>
+<%= paginate @line_items %>
