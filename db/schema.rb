@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_17_071437) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_05_075550) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -63,10 +63,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_17_071437) do
     t.string "city"
     t.string "country"
     t.integer "pincode"
-    t.integer "user_id", null: false
+    t.string "addressable_type"
+    t.integer "addressable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_addresses_on_user_id"
+    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable"
   end
 
   create_table "carts", force: :cascade do |t|
@@ -84,6 +85,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_17_071437) do
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
+  create_table "hit_counts", force: :cascade do |t|
+    t.integer "count", default: 0
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_hit_counts_on_user_id"
+  end
+
   create_table "line_items", force: :cascade do |t|
     t.integer "product_id", null: false
     t.integer "cart_id"
@@ -98,7 +107,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_17_071437) do
 
   create_table "orders", force: :cascade do |t|
     t.string "name"
-    t.text "address"
     t.string "email"
     t.integer "pay_type"
     t.datetime "created_at", null: false
@@ -121,6 +129,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_17_071437) do
     t.index ["category_id"], name: "index_products_on_category_id"
   end
 
+  create_table "ratings", force: :cascade do |t|
+    t.float "rating"
+    t.integer "user_id", null: false
+    t.integer "product_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_ratings_on_product_id"
+    t.index ["user_id"], name: "index_ratings_on_user_id"
+  end
+
   create_table "support_requests", force: :cascade do |t|
     t.string "email"
     t.string "subject"
@@ -137,16 +155,20 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_17_071437) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email"
+    t.string "role", default: "user"
+    t.string "language", default: "en"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "addresses", "users"
   add_foreign_key "categories", "categories", column: "parent_id"
+  add_foreign_key "hit_counts", "users"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
   add_foreign_key "orders", "users"
   add_foreign_key "products", "categories"
+  add_foreign_key "ratings", "products"
+  add_foreign_key "ratings", "users"
   add_foreign_key "support_requests", "orders"
 end

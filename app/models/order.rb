@@ -3,6 +3,9 @@ require 'pago'
 class Order < ApplicationRecord
   belongs_to :user
   has_many :line_items, dependent: :destroy
+  has_one :address, as: :addressable, dependent: :destroy
+
+  accepts_nested_attributes_for :address
 
   enum pay_type: {
     "Check"           => 0,
@@ -11,6 +14,7 @@ class Order < ApplicationRecord
   }
 
   validates :name, :address, :email, presence: true
+  validates :email, format: { with: EMAIL_REGEX }
   validates :pay_type, inclusion: pay_types.keys
 
   scope :by_date, -> (from = Time.now.midnight, to = Time.now) { where(created_at: from..to) }

@@ -14,6 +14,7 @@ class OrdersController < ApplicationController
 
   def new
     @order = Order.new
+    @order.build_address
   end
 
   def edit
@@ -66,7 +67,7 @@ class OrdersController < ApplicationController
     end
 
     def order_params
-      params.require(:order).permit(:name, :address, :email, :pay_type)
+      params.require(:order).permit(:name, :email, :pay_type, address_attributes: [:state, :country, :city, :pincode])
     end
 
     def pay_type_params
