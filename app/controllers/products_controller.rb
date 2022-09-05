@@ -2,7 +2,7 @@ class ProductsController < ApplicationController
   include ProductsHelper
 
   before_action :set_product, only: %i[ show edit update destroy ]
-  before_action :set_categories, only: [:new, :create, :edit, :update]
+  before_action :load_categories, only: [:new, :create, :edit, :update]
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_product
   
   def index
@@ -80,7 +80,7 @@ class ProductsController < ApplicationController
       @product = Product.find(params[:id])
     end
 
-    def set_categories
+    def load_categories
       @categories = Category.all.pluck(:name, :id)
     end
 
