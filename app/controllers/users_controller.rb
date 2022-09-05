@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    @user.address = Address.new
+    @user.build_address
   end
 
   def edit
@@ -65,12 +65,12 @@ class UsersController < ApplicationController
   end
 
   def orders
-    @orders = @user.orders.includes(line_items: :product)
+    @orders = current_user.orders.includes(line_items: :product)
     render layout: 'user_orders'
   end
 
   def line_items
-    @line_items = @user.line_items.page(params[:page]).per(MAX_LINE_ITEMS_ON_PAGE)
+    @line_items = current_user.line_items.page(params[:page]).per(MAX_LINE_ITEMS_ON_PAGE)
     render layout: 'user_orders'
   end
 
