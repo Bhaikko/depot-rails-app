@@ -1,7 +1,6 @@
 class Product < ApplicationRecord
   PERMALINK_REGEX = /\A[a-z0-9-]+\z/i.freeze
   DESCRIPTION_WORDS_REGEX = /[a-z0-9]+/i.freeze
-
   DEFAULT_TITLE = 'abc'.freeze
   
   belongs_to :category, counter_cache: true
@@ -12,59 +11,19 @@ class Product < ApplicationRecord
   has_many_attached :images, dependent: :destroy
 
   validates :title, :description, :image_url, :price, :discount_price, presence: true
-
-  validates :price, 
-    numericality: { greater_than: 0 },
-    allow_blank: true
-
-  validates :discount_price,
-    numericality: { greater_than: 0 },
-    allow_blank: true
-    
-  validates :price,
-    comparison: { 
-      greater_than: :discount_price,
-      message: 'must be greater than discount price'
-    },
-    allow_blank: true
-
+  validates :price, numericality: { greater_than: 0 }, allow_blank: true
+  validates :discount_price, numericality: { greater_than: 0 }, allow_blank: true
+  validates :price, comparison: { greater_than: :discount_price, message: 'must be greater than discount price' }, allow_blank: true
   validates :title, uniqueness: true
-
-  validates :permalink, 
-    uniqueness: {
-      message: "Should be unique",
-      case_sensitive: false
-    }, 
-    format: {
-      with: PERMALINK_REGEX,
-      message: "cannot have special character and no space allowed"
-    },
-    allow_blank: true
-
-  validates_length_of :words_in_description, 
-    in: 5..10,
-    too_short: 'must be more than 5',
-    too_long: 'must be less than 10',
-    allow_blank: true
-
-  validates :words_in_permalink_separated_by_hypen,
-    comparison: {
-      greater_than_or_equal_to: 3
-    }
-
-  validates :image_url, 
-    image_url: true,
-    allow_blank: true
-
-  validates_length_of :images, 
-    minimum: 1, 
-    maximum: 3, 
-    too_short: 'must have atleast one image',
-    too_long: 'cannot have more than 3 images'
+  validates :permalink, uniqueness: { message: "Should be unique", case_sensitive: false }, allow_blank: true
+  validates :permalink, format: { with: PERMALINK_REGEX, message: "cannot have special character and no space allowed" }, allow_blank: true
+  validates_length_of :words_in_description, in: 5..10, too_short: 'must be more than 5', too_long: 'must be less than 10', allow_blank: true
+  validates :words_in_permalink_separated_by_hypen, comparison: { greater_than_or_equal_to: 3 }
+  validates :image_url, image_url: true, allow_blank: true
+  validates_length_of :images, minimum: 1, maximum: 3, too_short: 'must have atleast one image', too_long: 'cannot have more than 3 images'
 
   before_validation :assign_default_title, unless: :title?
   before_validation :assign_default_discount, unless: :discount_price?
-  
   after_create_commit :increment_parent_category_products_count, if: -> { category.parent }
   after_destroy_commit :decrement_parent_category_products_count, if: -> { category.parent }
   
