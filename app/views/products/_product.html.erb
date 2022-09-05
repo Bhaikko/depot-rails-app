@@ -5,10 +5,10 @@
     <h3>Product Images</h3>
     <div class="image-container">
       <% if one_image %>
-        <%= image_tag rails_blob_path(product.images[0], disposition: 'attachment'), width: '250', height: '250' %>
+        <%= image_tag generate_image_url(product.images[0]), width: '250', height: '250' %>
       <% else %>
         <% product.images.each do |image| %>
-          <%= image_tag rails_blob_path(image, disposition: 'attachment'), width: '250', height: '250' %>
+          <%= image_tag generate_image_url(image), width: '250', height: '250' %>
         <% end %>
       <% end %>
     </div>

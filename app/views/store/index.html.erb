@@ -9,7 +9,7 @@
     <% @products.each do |product| %>
       <% cache product do %>
         <li>
-          <%= image_tag rails_blob_path(product.images[0], disposition: 'attachment'), width: '250', height: '250' %>
+          <%= image_tag generate_image_url(product.images[0]), width: '250', height: '250' %>
           <h2><%= product.title %></h2>
 
           <p>
