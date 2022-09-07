@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
   root 'store#index', as: 'store_index'
-
-  get 'admin' => 'admin#index'
   
   controller :sessions do
     get 'login' => :new
@@ -28,5 +26,6 @@ Rails.application.routes.draw do
   namespace :admin do
     get 'reports', to: 'reports#index'
     get 'categories', to: 'categories#index'
+    get '/', to: redirect('/admin/reports')
   end
 end

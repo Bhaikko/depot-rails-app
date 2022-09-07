@@ -1,5 +1,5 @@
-class Admin::CategoriesController < AdminController
+class Admin::CategoriesController < Admin::BaseController
   def index
-    @categories = Category.root_categories
+    @categories = Category.root_categories.order(:name)
   end
 end

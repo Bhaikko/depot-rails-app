@@ -2,8 +2,9 @@ class ApplicationController < ActionController::Base
   include Timer
   include SessionHandler
 
+  # auto_session_timeout 5.minutes
+
   around_action :attach_time_in_header
-  
   before_action :update_hit_counter, only: [:index, :show, :edit, :new]
   before_action :authorize
   before_action :logout_if_inactive, if: :user_session_exists?
@@ -19,16 +20,9 @@ class ApplicationController < ActionController::Base
     @logged_in_user ||= User.find_by(id: session[:user_id])
   end
 
-  protected def authorize_admin
-    unless current_user.admin?
-      redirect_to store_index_path, notice: "You don't have privilege to access this section"
-    end
-  end
-
   protected def update_hit_counter
-    if user = User.find_by(id: session[:user_id])
-      user.hit_count.increment!(:count)
-      @user_hit_count = user.hit_count.count
+    if current_user
+      @user_hit_count = current_user.hit_count.increment!(:count).count
     end
 
     @total_hit_count = HitCount.total_hit_count
