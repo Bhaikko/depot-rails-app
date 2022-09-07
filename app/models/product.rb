@@ -5,6 +5,7 @@ class Product < ApplicationRecord
   
   belongs_to :category, counter_cache: true
 
+  has_many :ratings, dependent: :destroy
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
