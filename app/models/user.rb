@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :orders, dependent: :destroy
   has_many :line_items, through: :orders
   has_one :address, as: :addressable, dependent: :destroy
+  has_one :hit_count, dependent: :nullify
   
   has_secure_password
 
