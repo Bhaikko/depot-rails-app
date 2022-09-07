@@ -1,6 +1,6 @@
 class RatingsController < ApplicationController
   def create
-    @rating = Rating.find_or_initialize_by(product_id: params[:product_id], user_id: session[:user_id])
+    @rating = Rating.find_or_initialize_by(rating_params)
     @rating.rating = params[:rating]
   
     respond_to do |format|
@@ -10,5 +10,9 @@ class RatingsController < ApplicationController
         format.json { render json: @rating.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def rating_params
+    params.permit([:product_id]).merge(user_id: session[:user_id])
   end
 end

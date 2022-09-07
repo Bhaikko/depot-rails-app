@@ -12,7 +12,7 @@ module ProductsHelper
   end
 
   def average_rating(product)
-    product.ratings.average(:rating) || 0
+    product.ratings.average(:rating) || 'Be first one to rate'
   end
 
   def current_product_rating_by_user(ratings, current_user)
