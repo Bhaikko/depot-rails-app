@@ -4,15 +4,21 @@ module SessionHandler
   end
 
   module ClassMethods
+    def allowed_inactivity_time
+      @@allowed_inactivity_time
+    end
+    
     def auto_session_timeout(inactivity_time)
-      # before_action:
-      define_method('auto_session_timeout') do
-        if user_session_exists? && Time.current - session[:last_request_time].to_time >= inactivity_time
-          logout
-        else
-          session[:last_request_time] = Time.current
-        end
-      end
+      @@allowed_inactivity_time = inactivity_time
+      before_action :logout_if_inactive, if: :user_session_exists?
+    end
+  end
+
+  def logout_if_inactive
+    if Time.current - session[:last_request_time].to_time >= self.class.allowed_inactivity_time
+      logout
+    else
+      session[:last_request_time] = Time.current
     end
   end
 

@@ -2,12 +2,11 @@ class ApplicationController < ActionController::Base
   include Timer
   include SessionHandler
 
-  # auto_session_timeout 5.minutes
+  auto_session_timeout 5.minutes
 
   around_action :attach_time_in_header
   before_action :update_hit_counter, only: [:index, :show, :edit, :new]
   before_action :authorize
-  before_action :logout_if_inactive, if: :user_session_exists?
   before_action :attach_ip_in_header
 
   protected def authorize
@@ -36,13 +35,5 @@ class ApplicationController < ActionController::Base
 
   protected def attach_ip_in_header
     @client_ip = request.ip
-  end
-
-  protected def logout_if_inactive
-    if Time.current - session[:last_request_time].to_time >= 300
-      logout
-    else
-      session[:last_request_time] = Time.current
-    end
   end
 end
