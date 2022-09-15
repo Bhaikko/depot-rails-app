@@ -56,6 +56,13 @@ class Product < ApplicationRecord
   before_validation :assign_default_title, unless: :title?
   before_validation :assign_default_discount, unless: :discount_price?
 
+  scope :enabled_products, -> { where(enabled: true) }
+  scope :taken_products, -> { joins(:line_items).distinct }
+
+  def self.taken_product_titles
+    taken_products.pluck(:title)
+  end
+
   private def assign_default_title
     self.title = DEFAULT_TITLE
   end
