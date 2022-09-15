@@ -8,5 +8,5 @@ class Category < ApplicationRecord
   validates :name, uniqueness: { scope: :parent_id }, allow_blank: true
   validates :parent, one_level_nesting: true
 
-  scope :root_categories, -> { includes(:sub_categories).where(parent_id: nil) }
+  scope :root_categories, -> { where(parent_id: nil) }
 end

@@ -58,8 +58,8 @@ class Product < ApplicationRecord
   before_validation :assign_default_title, unless: :title?
   before_validation :assign_default_discount, unless: :discount_price?
   
-  after_create_commit :increment_parent_category_products_count, if: -> { category.parent }
-  after_destroy_commit :decrement_parent_category_products_count, if: -> { category.parent }
+  after_create_commit :increment_parent_category_products_count, if: :category_parent_exists?
+  after_destroy_commit :decrement_parent_category_products_count, if: :category_parent_exists?
   
   scope :enabled_products, -> { where(enabled: true) }
   scope :taken_products, -> { joins(:line_items).distinct }
@@ -97,5 +97,9 @@ class Product < ApplicationRecord
 
   private def decrement_parent_category_products_count
     category.parent.decrement!(:products_count)
+  end
+
+  private def category_parent_exists?
+    category.parent.present?
   end
 end
