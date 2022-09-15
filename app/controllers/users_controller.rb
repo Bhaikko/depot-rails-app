@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-  MAX_LINE_ITEMS_ON_PAGE = 2
-
   before_action :set_user, only: %i[ show edit update destroy ]
 
   def index
@@ -68,7 +66,7 @@ class UsersController < ApplicationController
   end
 
   def line_items
-    @line_items = current_user.line_items.page(params[:page]).per(MAX_LINE_ITEMS_ON_PAGE)
+    @line_items = current_user.line_items.page(params[:page])
   end
 
   rescue_from 'User::Error' do |exception|
