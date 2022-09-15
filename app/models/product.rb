@@ -3,6 +3,8 @@ class Product < ApplicationRecord
   DESCRIPTION_WORDS_REGEX = /[a-z0-9]+/i.freeze
 
   DEFAULT_TITLE = 'abc'.freeze
+  
+  belongs_to :category, counter_cache: true
 
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
@@ -55,7 +57,10 @@ class Product < ApplicationRecord
 
   before_validation :assign_default_title, unless: :title?
   before_validation :assign_default_discount, unless: :discount_price?
-
+  
+  after_create_commit :increment_parent_category_products_count, if: :category_parent_exists?
+  after_destroy_commit :decrement_parent_category_products_count, if: :category_parent_exists?
+  
   scope :enabled_products, -> { where(enabled: true) }
   scope :taken_products, -> { joins(:line_items).distinct }
 
@@ -84,5 +89,17 @@ class Product < ApplicationRecord
 
   private def words_in_permalink_separated_by_hypen
     permalink.split('-').length
+  end
+
+  private def increment_parent_category_products_count
+    category.parent.increment!(:products_count)
+  end
+
+  private def decrement_parent_category_products_count
+    category.parent.decrement!(:products_count)
+  end
+
+  private def category_parent_exists?
+    category.parent.present?
   end
 end
