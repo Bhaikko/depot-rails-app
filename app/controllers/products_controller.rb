@@ -6,7 +6,11 @@ class ProductsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_product
   
   def index
-    @products = Product.all.order(:title)
+    if params[:category_id]
+      @products = Product.where(category_id: params[:category_id]).order(:title)
+    else
+      @products = Product.all.order(:title)
+    end
 
     respond_to do |format|
       format.html
