@@ -38,13 +38,16 @@
     </div>
 
     <div class="field">
-      <%= form.label :password_confirmation, 'Confirm; ' %>
+      <%= form.label :password_confirmation, 'Confirm Password ' %>
       <%= form.password_field( 
           :password_confirmation,
         id: :user_password_confirmation,
         size: 40
       )%>
     </div>
+
+    <h3>Address Details</h3>
+    <%= render partial: 'shared/forms/address', locals: { form: form, address: user.address } %>
 
     <div class="actions">
       <%= form.submit %>

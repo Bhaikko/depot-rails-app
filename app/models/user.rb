@@ -1,10 +1,23 @@
 class User < ApplicationRecord
   include Exceptions::User
-  
-  validates :name, :email, presence: true, uniqueness: true
-  validates :email, uniqueness: true, format: {
-    with: EMAIL_REGEX
+
+  enum language: {
+    "English"   => 'en',
+    "Hindi"     => 'hi'
   }
+
+  has_many :orders, dependent: :destroy
+  has_many :line_items, through: :orders
+  has_one :address, as: :addressable, dependent: :destroy
+  has_one :hit_count, dependent: :nullify
+  
+  has_secure_password
+
+  accepts_nested_attributes_for :address
+
+  validates :name, :email, presence: true, uniqueness: true
+  validates :email, format: { with: EMAIL_REGEX }
+  validates :language, inclusion: languages.keys
 
   has_secure_password
 

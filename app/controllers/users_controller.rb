@@ -1,31 +1,29 @@
 class UsersController < ApplicationController
+  MAX_LINE_ITEMS_ON_PAGE = 2
+
   before_action :set_user, only: %i[ show edit update destroy ]
 
-  # GET /users or /users.json
   def index
     @users = User.order(:name)
   end
 
-  # GET /users/1 or /users/1.json
   def show
   end
 
-  # GET /users/new
   def new
     @user = User.new
+    @user.build_address
   end
 
-  # GET /users/1/edit
   def edit
   end
 
-  # POST /users or /users.json
   def create
     @user = User.new(user_params)
+    @user.build_hit_count
 
     respond_to do |format|
       if @user.save
-        # Redirecting to users index page after creating new user
         format.html { 
           redirect_to users_url, 
           notice: "User #{@user.name} was successfully created." 
@@ -38,7 +36,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /users/1 or /users/1.json
   def update
     respond_to do |format|
       if @user.update(user_params)
@@ -54,7 +51,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # DELETE /users/1 or /users/1.json
   def destroy
     if @user.destroy
       respond_to do |format|
@@ -69,20 +65,35 @@ class UsersController < ApplicationController
     end
   end
 
-  # Rescuing from Transaction error thrown in user model if only one user exists
-  # the error thrown in model will be signaled back to controller
+  def orders
+    @orders = current_user.orders.includes(line_items: :product)
+    render layout: 'user_orders'
+  end
+
+  def line_items
+    @line_items = current_user.line_items.page(params[:page]).per(MAX_LINE_ITEMS_ON_PAGE)
+    render layout: 'user_orders'
+  end
+
   rescue_from 'User::Error' do |exception|
     redirect_to users_urls, notice: exception.message
   end
 
+  def language
+    @logged_in_user.update(language: params[:language])
+
+    redirect_to request.referrer
+  end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :password, :password_confirmation, :email)
+      params.require(:user).permit(
+        :name, :password, :password_confirmation, :email,
+        address_attributes: [ :state, :country, :city, :pincode ]
+      )
     end
 end

@@ -21,8 +21,18 @@
   </div>
 
   <div>
+    <%= form.label :category_id %>
+    <%= form.select :category_id, @categories, include_blank: t('form.select.include_blank') %>
+  </div>
+
+  <div>
     <%= form.label :image_url %>
     <%= form.text_field :image_url %>
+  </div>
+
+  <div>
+    <%= form.label :images, 'Product Images' %>
+    <%= form.file_field :images, accept: 'image/png,image/gif,image/jpg', multiple: true %>
   </div>
 
   <div>
